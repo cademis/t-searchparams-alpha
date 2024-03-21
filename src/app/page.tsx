@@ -17,14 +17,14 @@ BRYOPHYTA:"bryophyta"
 } as const
 
 type Metric = (typeof METRIC)[keyof typeof METRIC];
-function isMetric(metric: Metric | string): metric is Metric {
+function isMetric(metric: Metric): metric is Metric {
   return metric in METRIC
 }
 
 
 type HomeProps = {
   searchParams: {
-    preview: string
+    preview: Metric
   }
 }
 
@@ -33,6 +33,10 @@ export default async function Home({searchParams}: HomeProps) {
  const {preview} = searchParams
 
  const previewMetric = isMetric(preview) ? preview : undefined
+
+ if (!previewMetric) {
+  console.error("Invalid searchParams:", {preview});
+}
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
